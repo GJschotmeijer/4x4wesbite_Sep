@@ -275,7 +275,7 @@
 // ── STATE ──
 let config = {};
 try { config = JSON.parse(localStorage.getItem('sep_config') || '{}'); } catch {}
-let allPoules = [];          // { name, category, veld, teams[], matches[] }
+let allPoules = []; // { name, category, veld, teams[], matches[] }
 let currentFilter = 'all';
 let currentTab = 'standings';
 let selectedPoule = 'all';
@@ -314,9 +314,9 @@ function switchTab(tab, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   if (el) el.classList.add('active');
   document.getElementById('standings-view').style.display = tab === 'standings' ? '' : 'none';
-  document.getElementById('matches-view').style.display  = tab === 'matches'   ? '' : 'none';
+  document.getElementById('matches-view').style.display = tab === 'matches' ? '' : 'none';
   if (tab === 'standings') renderStandings();
-  if (tab === 'matches')   renderMatches();
+  if (tab === 'matches') renderMatches();
 }
 
 function setStatus(t, live) {
@@ -364,10 +364,43 @@ async function fetchData() {
         });
         await msalApp.initialize();
       }
+
+      // Handle redirect result first (coming back from Microsoft login page)
+      let redirectResult = null;
+      try { redirectResult = await msalApp.handleRedirectPromise(); } catch(e) { console.warn('Redirect handle:', e); }
+
       const scopes = ['https://graph.microsoft.com/Files.Read.All'];
-      let tokenResp;
-      try { tokenResp = await msalApp.acquireTokenSilent({ scopes, account: msalApp.getAllAccounts()[0] }); }
-      catch { tokenResp = await msalApp.acquireTokenPopup({ scopes }); }
+      let tokenResp = null;
+
+      if (redirectResult?.accessToken) {
+        // Just came back from redirect login
+        tokenResp = redirectResult;
+      } else {
+        // Try silent first
+        const accounts = msalApp.getAllAccounts();
+        if (accounts.length > 0) {
+          try {
+            tokenResp = await msalApp.acquireTokenSilent({ scopes, account: accounts[0] });
+          } catch (silentErr) {
+            console.log('Silent token failed, redirecting to login...', silentErr);
+            // Save config before redirect so it survives page reload
+            localStorage.setItem('sep_config', JSON.stringify(config));
+            setStatus('Doorsturen naar Microsoft...', false);
+            await msalApp.acquireTokenRedirect({ scopes });
+            return; // page will redirect, code below won't run
+          }
+        } else {
+          // No account known yet — redirect to login
+          localStorage.setItem('sep_config', JSON.stringify(config));
+          setStatus('Doorsturen naar Microsoft...', false);
+          await msalApp.acquireTokenRedirect({ scopes });
+          return;
+        }
+      }
+
+      if (!tokenResp?.accessToken) {
+        throw new Error('Geen toegangstoken ontvangen. Probeer opnieuw.');
+      }
       accessToken = tokenResp.accessToken;
 
       setStatus('Bestand zoeken...', false);
@@ -380,7 +413,7 @@ async function fetchData() {
       );
 
       const driveId = match.remoteItem.parentReference.driveId;
-      const itemId  = match.remoteItem.id;
+      const itemId = match.remoteItem.id;
       const baseUrl = `drives/${driveId}/items/${itemId}`;
 
       setStatus('Data laden...', false);
@@ -424,9 +457,9 @@ async function fetchPoule(baseUrl, sheetName) {
 function parsePouleData(sheetName, values) {
   if (!values || values.length < 10) return null;
   const info = values[7] || [];
-  const category    = info[4] || '';
+  const category = info[4] || '';
   const pouleLetter = info[8] || sheetName.replace('Poule','');
-  const veld        = info[10] || '';
+  const veld = info[10] || '';
 
   // --- Matches (rows 10..38 = index 9..37, header at index 9) ---
   const matches = [];
@@ -439,14 +472,14 @@ function parsePouleData(sheetName, values) {
     const score1 = r[9], score2 = r[11];
     const hasScore = score1 !== null && score1 !== '' && score2 !== null && score2 !== '';
     matches.push({
-      nr:    r[0],
+      nr: r[0],
       start: fmtTime(r[1]),
-      end:   fmtTime(r[3]),
-      home:  r[4]  || '',
-      away:  r[7]  || '',
+      end: fmtTime(r[3]),
+      home: r[4] || '',
+      away: r[7] || '',
       score1: hasScore ? score1 : null,
       score2: hasScore ? score2 : null,
-      ref:   (r[12] || '').toString().trim(),
+      ref: (r[12] || '').toString().trim(),
     });
   }
 
@@ -544,7 +577,7 @@ function renderMatches() {
       ${p.matches.map(m => {
         const played = m.score1 !== null;
         const scoreClass = played ? 'played' : '';
-        const scoreStr   = played ? `${m.score1} – ${m.score2}` : '– – –';
+        const scoreStr = played ? `${m.score1} – ${m.score2}` : '– – –';
         return `
         <div class="match-row">
           <div class="match-time">${m.start}</div>
@@ -601,8 +634,8 @@ function loadDemo() {
         matches.push({
           nr: matches.length+1,
           start: `${String(Math.floor(t/60)).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`,
-          end:   `${String(Math.floor((t+6)/60)).padStart(2,'0')}:${String((t+6)%60).padStart(2,'0')}`,
-          home:  ns[i], away: ns[j],
+          end: `${String(Math.floor((t+6)/60)).padStart(2,'0')}:${String((t+6)%60).padStart(2,'0')}`,
+          home: ns[i], away: ns[j],
           score1: played ? Math.floor(Math.random()*5) : null,
           score2: played ? Math.floor(Math.random()*5) : null,
           ref: ['Theo Dessens','Arnold Scholte','Leo Boer','Guus Heemskerk'][matches.length%4],
@@ -624,7 +657,10 @@ if (config.clientId) {
   document.getElementById('inp-client').value = config.clientId;
   document.getElementById('inp-tenant').value = config.tenantId || '';
   document.getElementById('inp-filename').value = config.filename || 'Master.xlsm';
+  // Auto-start: handles both fresh visit and returning from Microsoft redirect
+  fetchData();
 }
 </script>
 </body>
 </html>
+
