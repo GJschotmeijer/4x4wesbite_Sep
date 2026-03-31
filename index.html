@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEP 4x4 Schoolvoetbaltoernooi 2026 – Live </title>
+<title>SEP Voetbaltoernooi – Live</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -14,7 +14,6 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: var(--text); color: var(--white); min-height: 100vh; }
 
-  /* HEADER */
   header {
     background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 60%, var(--green-light) 100%);
     padding: 22px 32px 16px; position: sticky; top: 0; z-index: 100;
@@ -30,61 +29,37 @@
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
   #status-text { font-size: .82rem; color: rgba(255,255,255,.7); }
   #next-refresh { font-size: .72rem; color: rgba(255,255,255,.35); margin-top: 3px; }
-  .header-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  button { cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; font-weight: 700; border-radius: 8px; transition: all .2s; }
-  #btn-connect { background: var(--gold); color: var(--text); padding: 9px 20px; font-size: .88rem; }
-  #btn-connect:hover { background: #f7c94a; transform: translateY(-1px); }
-  #btn-refresh { background: rgba(255,255,255,.12); color: var(--white); padding: 9px 16px; font-size: .88rem; border: 1px solid rgba(255,255,255,.2); }
+  .header-actions { display: flex; gap: 8px; align-items: center; }
+  #btn-refresh { background: rgba(255,255,255,.12); color: var(--white); padding: 9px 16px; font-size: .88rem; border: 1px solid rgba(255,255,255,.2); border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 700; transition: all .2s; }
   #btn-refresh:hover { background: rgba(255,255,255,.2); }
   #btn-refresh:disabled { opacity: .4; cursor: not-allowed; }
 
-  /* TABS */
-  .tab-bar {
-    background: rgba(255,255,255,.04);
-    border-bottom: 1px solid rgba(255,255,255,.08);
-    padding: 0 32px;
-    display: flex; gap: 0; align-items: flex-end;
-  }
-  .tab {
-    padding: 14px 28px 12px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.05rem;
-    letter-spacing: 2px;
-    color: rgba(255,255,255,.4);
-    border-bottom: 3px solid transparent;
-    cursor: pointer;
-    transition: all .2s;
-    user-select: none;
-  }
+  .tab-bar { background: rgba(255,255,255,.04); border-bottom: 1px solid rgba(255,255,255,.08); padding: 0 32px; display: flex; }
+  .tab { padding: 14px 28px 12px; font-family: 'Bebas Neue', sans-serif; font-size: 1.05rem; letter-spacing: 2px; color: rgba(255,255,255,.4); border-bottom: 3px solid transparent; cursor: pointer; transition: all .2s; user-select: none; }
   .tab:hover { color: rgba(255,255,255,.7); }
   .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
 
-  /* FILTER BAR */
   .filter-bar { background: rgba(255,255,255,.03); border-bottom: 1px solid rgba(255,255,255,.06); padding: 12px 32px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
   .filter-label { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-right: 4px; }
-  .filter-btn { background: rgba(255,255,255,.07); color: rgba(255,255,255,.65); border: 1px solid rgba(255,255,255,.12); padding: 5px 15px; font-size: .8rem; border-radius: 20px; letter-spacing: .5px; }
+  .filter-btn { background: rgba(255,255,255,.07); color: rgba(255,255,255,.65); border: 1px solid rgba(255,255,255,.12); padding: 5px 15px; font-size: .8rem; border-radius: 20px; letter-spacing: .5px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 700; transition: all .2s; }
   .filter-btn.active { background: var(--green); color: var(--white); border-color: var(--green-light); }
   .filter-btn:hover { border-color: var(--gold); color: var(--white); }
 
-  /* MAIN */
   main { padding: 24px 32px; max-width: 1400px; margin: 0 auto; }
 
-  /* SETUP PANEL */
-  #setup-panel { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 36px; max-width: 540px; margin: 50px auto; text-align: center; }
-  #setup-panel h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--gold); letter-spacing: 2px; margin-bottom: 10px; }
-  #setup-panel p { color: rgba(255,255,255,.6); line-height: 1.7; margin-bottom: 18px; font-size: .88rem; }
-  .input-group { margin-bottom: 13px; text-align: left; }
-  .input-group label { display: block; font-size: .76rem; color: var(--muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-  .input-group input { width: 100%; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); border-radius: 8px; padding: 10px 13px; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: .88rem; outline: none; transition: border-color .2s; }
-  .input-group input:focus { border-color: var(--gold); }
-  .input-group input::placeholder { color: rgba(255,255,255,.25); }
-  .input-hint { font-size: .73rem; color: var(--muted); margin-top: 4px; line-height: 1.5; }
-  #btn-save-config { background: var(--green); color: var(--white); padding: 12px 32px; font-size: .95rem; width: 100%; border-radius: 10px; margin-top: 6px; }
-  #btn-save-config:hover { background: var(--green-light); }
-  .help-link { font-size: .78rem; color: var(--gold); text-decoration: underline; cursor: pointer; margin-top: 12px; display: block; }
-  .demo-btn { background: rgba(255,255,255,.08); color: var(--white); border: 1px solid rgba(255,255,255,.18); padding: 9px 22px; border-radius: 8px; font-size: .85rem; margin-top: 8px; }
+  /* Loading screen */
+  #loading-screen { text-align: center; padding: 100px 20px; }
+  #loading-screen .spin { font-size: 3rem; animation: spin 1s linear infinite; display: inline-block; margin-bottom: 20px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading-screen h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 3px; color: rgba(255,255,255,.5); }
 
-  /* STANDINGS GRID */
+  /* Error screen */
+  #error-screen { display: none; text-align: center; padding: 80px 20px; }
+  #error-screen .icon { font-size: 3rem; margin-bottom: 16px; }
+  #error-screen h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--gold); letter-spacing: 2px; margin-bottom: 12px; }
+  #error-screen p { color: rgba(255,255,255,.55); font-size: .9rem; line-height: 1.7; }
+
+  /* Standings */
   #poules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 18px; }
   .poule-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; overflow: hidden; animation: fadeIn .35s ease both; }
   @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
@@ -106,70 +81,26 @@
   .team-name { font-weight: 600; }
   .pts { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--gold); text-align: center; }
 
-  /* MATCHES TAB */
+  /* Matches */
   #matches-view { display: none; }
-
-  /* Poule selector for matches */
-  .poule-selector {
-    display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px;
-  }
-  .ps-btn {
-    background: rgba(255,255,255,.07); color: rgba(255,255,255,.6);
-    border: 1px solid rgba(255,255,255,.12); padding: 5px 13px;
-    font-size: .78rem; border-radius: 6px; letter-spacing: .5px;
-  }
+  .poule-selector { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+  .ps-btn { background: rgba(255,255,255,.07); color: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.12); padding: 5px 13px; font-size: .78rem; border-radius: 6px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 700; transition: all .2s; }
   .ps-btn.active { background: var(--green); color: var(--white); border-color: var(--green-light); }
   .ps-btn:hover { border-color: var(--gold); color: var(--white); }
-
-  /* Match cards */
   .matches-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 18px; }
-
   .match-group { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; overflow: hidden; animation: fadeIn .3s ease both; }
   .match-group-header { background: var(--green-dark); padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--green-light); }
   .match-group-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 2px; color: var(--gold); }
   .match-group-meta { font-size: .72rem; color: rgba(255,255,255,.5); text-align: right; line-height: 1.4; }
-
-  .match-row {
-    display: grid;
-    grid-template-columns: 52px 1fr 80px 1fr 90px;
-    align-items: center;
-    padding: 9px 14px;
-    border-bottom: 1px solid rgba(255,255,255,.055);
-    gap: 8px;
-    transition: background .15s;
-  }
+  .match-row { display: grid; grid-template-columns: 52px 1fr 80px 1fr 90px; align-items: center; padding: 9px 14px; border-bottom: 1px solid rgba(255,255,255,.055); gap: 8px; transition: background .15s; }
   .match-row:last-child { border-bottom: none; }
   .match-row:hover { background: rgba(255,255,255,.04); }
   .match-time { font-family: 'Bebas Neue', sans-serif; font-size: .95rem; color: var(--muted); letter-spacing: 1px; }
   .match-team { font-size: .82rem; font-weight: 600; }
   .match-team.home { text-align: right; }
-  .match-team.away { text-align: left; }
-  .match-score {
-    text-align: center;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.2rem;
-    letter-spacing: 2px;
-    color: var(--white);
-    background: rgba(255,255,255,.08);
-    border-radius: 6px;
-    padding: 3px 6px;
-    min-width: 60px;
-  }
+  .match-score { text-align: center; font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 2px; color: var(--white); background: rgba(255,255,255,.08); border-radius: 6px; padding: 3px 6px; min-width: 60px; }
   .match-score.played { color: var(--gold); background: rgba(240,180,41,.1); }
-  .match-score.live { color: #4ade80; background: rgba(74,222,128,.12); animation: scorePulse 1.5s infinite; }
-  @keyframes scorePulse { 0%,100%{opacity:1} 50%{opacity:.7} }
   .match-ref { font-size: .7rem; color: var(--muted); text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-  /* Help overlay */
-  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 200; align-items: center; justify-content: center; }
-  .overlay.open { display: flex; }
-  .modal { background: #1a2516; border: 1px solid rgba(255,255,255,.12); border-radius: 16px; padding: 36px; max-width: 580px; width: 90%; max-height: 85vh; overflow-y: auto; }
-  .modal h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--gold); letter-spacing: 2px; margin-bottom: 14px; }
-  .modal ol { padding-left: 20px; }
-  .modal li { margin-bottom: 11px; color: rgba(255,255,255,.75); line-height: 1.6; font-size: .87rem; }
-  .modal code { background: rgba(255,255,255,.1); padding: 2px 7px; border-radius: 5px; font-size: .81rem; color: var(--gold); font-family: monospace; }
-  .modal .note { background: rgba(240,180,41,.09); border-left: 3px solid var(--gold); padding: 11px 15px; border-radius: 0 8px 8px 0; margin: 14px 0; font-size: .84rem; color: rgba(255,255,255,.8); line-height: 1.6; }
-  #btn-close-modal { background: var(--green); color: var(--white); padding: 9px 26px; border-radius: 8px; margin-top: 18px; font-size: .88rem; }
   .empty-state { text-align: center; padding: 70px 20px; color: var(--muted); grid-column: 1/-1; }
   .empty-state .icon { font-size: 2.8rem; margin-bottom: 14px; }
   .empty-state h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: rgba(255,255,255,.35); letter-spacing: 2px; }
@@ -189,26 +120,23 @@
 <header>
   <div><div class="logo">SEP <span>Toernooi</span></div></div>
   <div class="header-meta">
-    <h2>Live Standens &amp; Wedstrijden · 1 April 2026</h2>
+    <h2>Live Standen &amp; Wedstrijden · 1 April 2026</h2>
     <div id="status-bar">
       <div class="dot" id="status-dot"></div>
-      <span id="status-text">Niet verbonden</span>
+      <span id="status-text">Laden...</span>
     </div>
     <div id="next-refresh"></div>
   </div>
   <div class="header-actions">
-    <button id="btn-refresh" disabled onclick="fetchData()">⟳ Vernieuwen</button>
-    <button id="btn-connect" onclick="showSetup()">⚙ Instellingen</button>
+    <button id="btn-refresh" onclick="loadFromGitHub()">⟳ Vernieuwen</button>
   </div>
 </header>
 
-<!-- TABS -->
 <div class="tab-bar" id="tab-bar" style="display:none">
   <div class="tab active" onclick="switchTab('standings',this)">📊 Standen</div>
   <div class="tab" onclick="switchTab('matches',this)">⚽ Wedstrijden</div>
 </div>
 
-<!-- FILTER (shared) -->
 <div class="filter-bar" id="filter-bar" style="display:none">
   <span class="filter-label">Filter:</span>
   <button class="filter-btn active" onclick="setFilter('all',this)">Alle poules</button>
@@ -218,278 +146,104 @@
 </div>
 
 <main>
-  <!-- Setup -->
-  <div id="setup-panel">
-    <h2>⚽ Verbinding instellen</h2>
-    <p>Het bestand staat in "Gedeeld met mij" op jouw OneDrive. Log in met je Microsoft-account en het bestand wordt automatisch gevonden.</p>
-    <div class="input-group">
-      <label>Client ID (Azure App Registratie)</label>
-      <input type="text" id="inp-client" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
-    </div>
-    <div class="input-group">
-      <label>Tenant ID</label>
-      <input type="text" id="inp-tenant" placeholder="common">
-      <div class="input-hint">💡 Weet je de Tenant ID niet? Laat leeg of vul <strong>common</strong> in.</div>
-    </div>
-    <div class="input-group">
-      <label>Bestandsnaam</label>
-      <input type="text" id="inp-filename" value="Master.xlsm">
-      <div class="input-hint">Precies zoals het bestand heet in OneDrive van de eigenaar.</div>
-    </div>
-    <button id="btn-save-config" onclick="saveConfig()">✓ Inloggen &amp; Laden</button>
-    <span class="help-link" onclick="showHelp()">Hoe maak ik een Azure App Registratie? →</span>
-    <hr style="margin:22px 0;border-color:rgba(255,255,255,.1)">
-    <p style="font-size:.82rem">Of bekijk de lay-out met voorbeelddata:</p>
-    <button class="demo-btn" onclick="loadDemo()">▶ Demo starten</button>
+  <div id="loading-screen">
+    <div class="spin">⚽</div>
+    <h3>Standen laden...</h3>
   </div>
-
-  <!-- Standings tab -->
+  <div id="error-screen">
+    <div class="icon">⚠️</div>
+    <h3>Kan data niet laden</h3>
+    <p id="error-msg"></p>
+  </div>
   <div id="standings-view" style="display:none">
     <div id="poules-grid"></div>
   </div>
-
-  <!-- Matches tab -->
   <div id="matches-view">
     <div class="poule-selector" id="poule-selector"></div>
     <div class="matches-grid" id="matches-grid"></div>
   </div>
 </main>
 
-<!-- Help overlay -->
-<div class="overlay" id="help-overlay">
-  <div class="modal">
-    <h3>Azure App instellen</h3>
-    <div class="note">Eenmalig instellen. Daarna log je in met je Microsoft-account en het gedeelde bestand wordt automatisch geladen.</div>
-    <ol>
-      <li>Ga naar <strong>portal.azure.com</strong> en log in.</li>
-      <li><strong>Azure Active Directory → App-registraties → Nieuwe registratie.</strong> Geef een naam (bijv. "SEP Scorebord") en klik Registreren.</li>
-      <li>Kopieer de <strong>Application (client) ID</strong> en eventueel de <strong>Directory (tenant) ID</strong> (of gebruik <code>common</code>).</li>
-      <li><strong>API-machtigingen → Toevoegen → Microsoft Graph → Gedelegeerd:</strong> voeg <code>Files.Read.All</code> toe. Klik daarna op "Beheerdersmachtiging verlenen".</li>
-      <li><strong>Verificatie → Platform toevoegen → Toepassing met één pagina (SPA).</strong> Vul als Redirect URI de URL van dit bestand in (of <code>http://localhost</code> bij lokaal gebruik).</li>
-    </ol>
-    <button id="btn-close-modal" onclick="closeHelp()">Sluiten</button>
-  </div>
-</div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-// ── STATE ──
-let config = {};
-try { config = JSON.parse(localStorage.getItem('sep_config') || '{}'); } catch {}
-let allPoules = []; // { name, category, veld, teams[], matches[] }
-let currentFilter = 'all';
-let currentTab = 'standings';
-let selectedPoule = 'all';
+// ════════════════════════════════════════════════
+//  CONFIGURATIE — pas alleen deze regel aan
+// ════════════════════════════════════════════════
+const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/gjschotmeijer/4x4website_SEP/main/Master.xlsm';
+// ════════════════════════════════════════════════
+
+let allPoules = [], currentFilter = 'all', currentTab = 'standings', selectedPoule = 'all';
 let refreshTimer = null, refreshCountdown = 30;
-let msalApp = null, accessToken = null;
 
-// ── MSAL ──
-function loadMSAL(cb) {
-  if (window.msal) { cb(); return; }
-  const s = document.createElement('script');
-  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/msal.js/2.38.3/msal-browser.min.js';
-  s.onload = cb; document.head.appendChild(s);
-}
-
-// ── UI HELPERS ──
-function showSetup() {
-  document.getElementById('setup-panel').style.display = '';
-  document.getElementById('standings-view').style.display = 'none';
-  document.getElementById('matches-view').style.display = 'none';
-  document.getElementById('tab-bar').style.display = 'none';
-  document.getElementById('filter-bar').style.display = 'none';
-  document.getElementById('inp-client').value = config.clientId || '';
-  document.getElementById('inp-tenant').value = config.tenantId || '';
-  document.getElementById('inp-filename').value = config.filename || 'Master.xlsm';
-}
-
-function showApp() {
-  document.getElementById('setup-panel').style.display = 'none';
-  document.getElementById('tab-bar').style.display = 'flex';
-  document.getElementById('filter-bar').style.display = 'flex';
-  switchTab(currentTab, document.querySelector('.tab.active') || document.querySelectorAll('.tab')[0]);
-}
-
-function switchTab(tab, el) {
-  currentTab = tab;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  if (el) el.classList.add('active');
-  document.getElementById('standings-view').style.display = tab === 'standings' ? '' : 'none';
-  document.getElementById('matches-view').style.display = tab === 'matches' ? '' : 'none';
-  if (tab === 'standings') renderStandings();
-  if (tab === 'matches') renderMatches();
-}
-
-function setStatus(t, live) {
-  document.getElementById('status-text').textContent = t;
-  document.getElementById('status-dot').style.background = live ? '#2ea84f' : '#f0b429';
-}
-function showHelp() { document.getElementById('help-overlay').classList.add('open'); }
-function closeHelp() { document.getElementById('help-overlay').classList.remove('open'); }
-
-function setFilter(f, btn) {
-  currentFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  if (currentTab === 'standings') renderStandings();
-  else renderMatches();
-}
-
-function saveConfig() {
-  config = {
-    clientId: document.getElementById('inp-client').value.trim(),
-    tenantId: document.getElementById('inp-tenant').value.trim() || 'common',
-    filename: document.getElementById('inp-filename').value.trim() || 'Master.xlsm',
-  };
-  if (!config.clientId) { alert('Vul het Client ID in.'); return; }
-  localStorage.setItem('sep_config', JSON.stringify(config));
-  fetchData();
-}
-
-// ── FETCH ──
-async function fetchData() {
-  if (!config.clientId) { showSetup(); return; }
-  setStatus('Inloggen...', false);
+// ── LOAD FROM GITHUB ──
+async function loadFromGitHub() {
+  setStatus('Laden...', false);
   document.getElementById('btn-refresh').disabled = true;
-
-  loadMSAL(async () => {
-    try {
-      if (!msalApp) {
-        msalApp = new msal.PublicClientApplication({
-          auth: {
-            clientId: config.clientId,
-            authority: `https://login.microsoftonline.com/${config.tenantId || 'common'}`,
-            redirectUri: window.location.href.split('?')[0].split('#')[0],
-          },
-          cache: { cacheLocation: 'localStorage' }
-        });
-        await msalApp.initialize();
-      }
-
-      // Handle redirect result first (coming back from Microsoft login page)
-      let redirectResult = null;
-      try { redirectResult = await msalApp.handleRedirectPromise(); } catch(e) { console.warn('Redirect handle:', e); }
-
-      const scopes = ['https://graph.microsoft.com/Files.Read.All'];
-      let tokenResp = null;
-
-      if (redirectResult?.accessToken) {
-        // Just came back from redirect login
-        tokenResp = redirectResult;
-      } else {
-        // Try silent first
-        const accounts = msalApp.getAllAccounts();
-        if (accounts.length > 0) {
-          try {
-            tokenResp = await msalApp.acquireTokenSilent({ scopes, account: accounts[0] });
-          } catch (silentErr) {
-            console.log('Silent token failed, redirecting to login...', silentErr);
-            // Save config before redirect so it survives page reload
-            localStorage.setItem('sep_config', JSON.stringify(config));
-            setStatus('Doorsturen naar Microsoft...', false);
-            await msalApp.acquireTokenRedirect({ scopes });
-            return; // page will redirect, code below won't run
-          }
-        } else {
-          // No account known yet — redirect to login
-          localStorage.setItem('sep_config', JSON.stringify(config));
-          setStatus('Doorsturen naar Microsoft...', false);
-          await msalApp.acquireTokenRedirect({ scopes });
-          return;
-        }
-      }
-
-      if (!tokenResp?.accessToken) {
-        throw new Error('Geen toegangstoken ontvangen. Probeer opnieuw.');
-      }
-      accessToken = tokenResp.accessToken;
-
-      setStatus('Bestand zoeken...', false);
-      const shared = await graphGet('me/drive/sharedWithMe?$top=100');
-      const match = shared.value.find(i =>
-        i.name === config.filename || i.name.toLowerCase() === config.filename.toLowerCase()
-      );
-      if (!match) throw new Error(
-        `Bestand "${config.filename}" niet gevonden in "Gedeeld met mij".\n\nControleer:\n• Is de bestandsnaam exact correct?\n• Is het bestand met jóuw account gedeeld?`
-      );
-
-      const driveId = match.remoteItem.parentReference.driveId;
-      const itemId = match.remoteItem.id;
-      const baseUrl = `drives/${driveId}/items/${itemId}`;
-
-      setStatus('Data laden...', false);
-      const wsData = await graphGet(`${baseUrl}/workbook/worksheets`);
-      const pouleSheets = wsData.value.filter(s => s.name.startsWith('Poule'));
-      const results = await Promise.all(pouleSheets.map(s => fetchPoule(baseUrl, s.name)));
-      allPoules = results.filter(Boolean);
-
-      document.getElementById('btn-refresh').disabled = false;
-      setStatus(`Bijgewerkt: ${new Date().toLocaleTimeString('nl-NL')}`, true);
-      showApp();
-      if (currentTab === 'standings') renderStandings();
-      else renderMatches();
-      buildPouleSelector();
-      startAutoRefresh();
-    } catch (err) {
-      console.error(err);
-      setStatus('Fout bij laden', false);
-      document.getElementById('btn-refresh').disabled = false;
-      alert('⚠️ ' + err.message);
-    }
-  });
-}
-
-async function graphGet(path) {
-  const r = await fetch(`https://graph.microsoft.com/v1.0/${path}`, {
-    headers: { Authorization: `Bearer ${accessToken}` }
-  });
-  if (!r.ok) { const e = await r.json().catch(()=>{}); throw new Error(e?.error?.message || `Graph fout ${r.status}`); }
-  return r.json();
-}
-
-async function fetchPoule(baseUrl, sheetName) {
   try {
-    const data = await graphGet(`${baseUrl}/workbook/worksheets('${encodeURIComponent(sheetName)}')/usedRange`);
-    return parsePouleData(sheetName, data.values);
-  } catch { return null; }
+    const url = GITHUB_RAW_URL + '?t=' + Date.now(); // cache bust
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status} — controleer of het bestand op GitHub staat.`);
+    const buf = await resp.arrayBuffer();
+    parseExcel(buf);
+    setStatus(`Bijgewerkt: ${new Date().toLocaleTimeString('nl-NL')}`, true);
+    showApp();
+    if (currentTab === 'standings') renderStandings();
+    else renderMatches();
+    buildPouleSelector();
+    startAutoRefresh();
+  } catch (err) {
+    console.error(err);
+    document.getElementById('loading-screen').style.display = 'none';
+    document.getElementById('error-screen').style.display = '';
+    document.getElementById('error-msg').textContent = err.message;
+    setStatus('Fout bij laden', false);
+  }
+  document.getElementById('btn-refresh').disabled = false;
 }
 
-// ── PARSE ──
-function parsePouleData(sheetName, values) {
-  if (!values || values.length < 10) return null;
-  const info = values[7] || [];
-  const category = info[4] || '';
-  const pouleLetter = info[8] || sheetName.replace('Poule','');
-  const veld = info[10] || '';
+// ── PARSE EXCEL ──
+function parseExcel(buf) {
+  const wb = XLSX.read(buf, { type: 'array', cellDates: true });
+  const pouleSheets = wb.SheetNames.filter(n => n.startsWith('Poule'));
+  allPoules = pouleSheets.map(name => parsePoule(wb, name)).filter(Boolean);
+}
 
-  // --- Matches (rows 10..38 = index 9..37, header at index 9) ---
+function parsePoule(wb, sheetName) {
+  const ws = wb.Sheets[sheetName];
+  const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: null });
+  if (!rows || rows.length < 10) return null;
+
+  const info = rows[7] || [];
+  const category    = info[4] || '';
+  const pouleLetter = info[8] || sheetName.replace('Poule','');
+  const veld        = info[10] || '';
+
+  // Matches: header at row index 9, data from 10 onward
   const matches = [];
-  // Row index 9 is the header "Nr. | Aanvang | - | Eindtijd | Wedstrijd..."
-  // Actual match rows start at index 10
-  for (let i = 10; i < values.length; i++) {
-    const r = values[i];
-    if (!r || r[0] === null || r[0] === undefined || r[0] === 'Team') break;
-    if (typeof r[0] !== 'number') continue; // skip non-match rows
-    const score1 = r[9], score2 = r[11];
-    const hasScore = score1 !== null && score1 !== '' && score2 !== null && score2 !== '';
+  for (let i = 10; i < rows.length; i++) {
+    const r = rows[i];
+    if (!r || r[0] === null || r[0] === 'Team') break;
+    if (typeof r[0] !== 'number') continue;
+    const s1 = r[9], s2 = r[11];
+    const hasScore = s1 !== null && s1 !== '' && s2 !== null && s2 !== '';
     matches.push({
       nr: r[0],
       start: fmtTime(r[1]),
-      end: fmtTime(r[3]),
-      home: r[4] || '',
-      away: r[7] || '',
-      score1: hasScore ? score1 : null,
-      score2: hasScore ? score2 : null,
-      ref: (r[12] || '').toString().trim(),
+      home:  r[4]  || '',
+      away:  r[7]  || '',
+      score1: hasScore ? s1 : null,
+      score2: hasScore ? s2 : null,
+      ref:   (r[12] || '').toString().trim(),
     });
   }
 
-  // --- Standings ---
+  // Standings
   let hi = -1;
-  for (let i = 0; i < values.length; i++) { if (values[i][0] === 'Team') { hi = i; break; } }
+  for (let i = 0; i < rows.length; i++) { if (rows[i] && rows[i][0] === 'Team') { hi = i; break; } }
   const teams = [];
   if (hi >= 0) {
-    for (let i = hi+1; i < values.length; i++) {
-      const r = values[i]; if (!r[0]) break;
+    for (let i = hi+1; i < rows.length; i++) {
+      const r = rows[i]; if (!r || !r[0]) break;
       teams.push({ name: r[0], pts: n(r[14]), g: n(r[16]), w: n(r[17]), v: n(r[18]), gd: n(r[19]) });
     }
     teams.sort((a,b) => b.pts - a.pts);
@@ -500,44 +254,66 @@ function parsePouleData(sheetName, values) {
 
 function fmtTime(v) {
   if (!v) return '';
+  if (v instanceof Date) return `${String(v.getHours()).padStart(2,'0')}:${String(v.getMinutes()).padStart(2,'0')}`;
   if (typeof v === 'string' && v.includes(':')) return v.substring(0,5);
-  // Excel time fraction
   if (typeof v === 'number') {
-    const totalMin = Math.round(v * 24 * 60);
-    const h = Math.floor(totalMin / 60), m = totalMin % 60;
-    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+    const m = Math.round(v * 24 * 60);
+    return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
   }
   return String(v);
 }
 function n(v) { return typeof v === 'number' ? v : parseInt(v)||0; }
 
+// ── UI ──
+function setStatus(t, live) {
+  document.getElementById('status-text').textContent = t;
+  document.getElementById('status-dot').style.background = live ? '#2ea84f' : '#f0b429';
+}
+
+function showApp() {
+  document.getElementById('loading-screen').style.display = 'none';
+  document.getElementById('error-screen').style.display = 'none';
+  document.getElementById('tab-bar').style.display = 'flex';
+  document.getElementById('filter-bar').style.display = 'flex';
+  document.getElementById('standings-view').style.display = currentTab === 'standings' ? '' : 'none';
+  document.getElementById('matches-view').style.display  = currentTab === 'matches'   ? '' : 'none';
+}
+
+function switchTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.getElementById('standings-view').style.display = tab === 'standings' ? '' : 'none';
+  document.getElementById('matches-view').style.display  = tab === 'matches'   ? '' : 'none';
+  if (tab === 'standings') renderStandings();
+  else renderMatches();
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (currentTab === 'standings') renderStandings();
+  else renderMatches();
+}
+
 // ── RENDER STANDINGS ──
 function renderStandings() {
   const grid = document.getElementById('poules-grid');
   const list = filteredPoules();
-  if (!list.length) {
-    grid.innerHTML = `<div class="empty-state"><div class="icon">⚽</div><h3>Geen poules gevonden</h3></div>`;
-    return;
-  }
+  if (!list.length) { grid.innerHTML = `<div class="empty-state"><div class="icon">⚽</div><h3>Geen poules gevonden</h3></div>`; return; }
   grid.innerHTML = list.map((p,i) => `
-    <div class="poule-card" style="animation-delay:${i*.035}s">
+    <div class="poule-card" style="animation-delay:${i*.03}s">
       <div class="poule-header">
         <div class="poule-title">${p.name}</div>
         <div class="poule-meta">${p.category}<br>Veld ${p.veld}</div>
       </div>
       <table>
-        <thead><tr>
-          <th class="num">#</th><th>Team</th>
-          <th class="num">G</th><th class="num">W</th><th class="num">V</th><th class="num">Ge</th><th class="num">Pnt</th>
-        </tr></thead>
+        <thead><tr><th class="num">#</th><th>Team</th><th class="num">G</th><th class="num">W</th><th class="num">V</th><th class="num">Ge</th><th class="num">Pnt</th></tr></thead>
         <tbody>${p.teams.map((t,j) => `
-          <tr>
-            <td class="rank">${j+1}</td>
-            <td class="team-name">${t.name}</td>
-            <td class="num">${t.g}</td><td class="num">${t.w}</td>
-            <td class="num">${t.v}</td><td class="num">${t.gd}</td>
-            <td class="pts">${t.pts}</td>
-          </tr>`).join('')}
+          <tr><td class="rank">${j+1}</td><td class="team-name">${t.name}</td>
+          <td class="num">${t.g}</td><td class="num">${t.w}</td><td class="num">${t.v}</td><td class="num">${t.gd}</td>
+          <td class="pts">${t.pts}</td></tr>`).join('')}
         </tbody>
       </table>
     </div>`).join('');
@@ -562,13 +338,8 @@ function renderMatches() {
   const grid = document.getElementById('matches-grid');
   let list = filteredPoules();
   if (selectedPoule !== 'all') list = list.filter(p => p.name === selectedPoule);
-
-  if (!list.length) {
-    grid.innerHTML = `<div class="empty-state"><div class="icon">📋</div><h3>Geen wedstrijden gevonden</h3></div>`;
-    return;
-  }
-
-  grid.innerHTML = list.map((p, i) => `
+  if (!list.length) { grid.innerHTML = `<div class="empty-state"><div class="icon">📋</div><h3>Geen wedstrijden gevonden</h3></div>`; return; }
+  grid.innerHTML = list.map((p,i) => `
     <div class="match-group" style="animation-delay:${i*.03}s">
       <div class="match-group-header">
         <div class="match-group-title">${p.name}</div>
@@ -576,14 +347,11 @@ function renderMatches() {
       </div>
       ${p.matches.map(m => {
         const played = m.score1 !== null;
-        const scoreClass = played ? 'played' : '';
-        const scoreStr = played ? `${m.score1} – ${m.score2}` : '– – –';
-        return `
-        <div class="match-row">
+        return `<div class="match-row">
           <div class="match-time">${m.start}</div>
           <div class="match-team home">${m.home}</div>
-          <div class="match-score ${scoreClass}">${scoreStr}</div>
-          <div class="match-team away">${m.away}</div>
+          <div class="match-score ${played?'played':''}">${played ? m.score1+' – '+m.score2 : '– – –'}</div>
+          <div class="match-team">${m.away}</div>
           <div class="match-ref">${m.ref}</div>
         </div>`;
       }).join('')}
@@ -596,11 +364,11 @@ function filteredPoules() {
 
 // ── AUTO REFRESH ──
 function startAutoRefresh() {
-  clearInterval(refreshTimer); refreshCountdown = 30; updateCountdown();
+  clearInterval(refreshTimer); refreshCountdown = 60; updateCountdown();
   refreshTimer = setInterval(() => {
     refreshCountdown--;
     updateCountdown();
-    if (refreshCountdown <= 0) { refreshCountdown = 30; fetchData(); }
+    if (refreshCountdown <= 0) { refreshCountdown = 60; loadFromGitHub(); }
   }, 1000);
 }
 function updateCountdown() {
@@ -608,59 +376,8 @@ function updateCountdown() {
   if (el && allPoules.length) el.textContent = `Volgende update over ${refreshCountdown}s`;
 }
 
-// ── DEMO ──
-function loadDemo() {
-  const cats = ['Meisjes','Meisjes','Meisjes','Meisjes','Meisjes','Meisjes','Gemengd','Gemengd','Jongens','Jongens','Jongens','Jongens'];
-  const namesets = [
-    ['Maria M2','Galjoen M1','Springwijs M1','Max M1','Maurits M1','DSV M1','Horizon M1','Widar M1'],
-    ['Talent M1','Eglantier M1','BMS M1','Waterhof M1','Cornelis J1','Bonte Pael M1','Muziekwijk M1','Widar M2'],
-    ['DSV M2','Horizon M2','Maria M1','Max M2','Galjoen M2','Springwijs M2','Maurits M2','Talent M2'],
-  ];
-  allPoules = Array.from({length:12}, (_,gi) => {
-    const letter = String.fromCharCode(65+gi);
-    const ns = namesets[gi % namesets.length];
-    const teams = ns.map(name => {
-      const w=Math.floor(Math.random()*7), v=Math.floor(Math.random()*(7-w)), gd=7-w-v;
-      return {name, w, v, gd, g:w+v+gd, pts:w*3+gd};
-    }).sort((a,b)=>b.pts-a.pts);
-
-    // Generate demo matches
-    const matches = [];
-    let t = 13*60+30 + gi*5; // stagger start times per poule
-    for (let i=0; i<ns.length; i++) {
-      for (let j=i+1; j<ns.length && matches.length<28; j++) {
-        if (matches.length % 2 === 0 && i + j > 2) continue; // keep it short
-        const played = matches.length < Math.floor(Math.random()*14+4);
-        matches.push({
-          nr: matches.length+1,
-          start: `${String(Math.floor(t/60)).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`,
-          end: `${String(Math.floor((t+6)/60)).padStart(2,'0')}:${String((t+6)%60).padStart(2,'0')}`,
-          home: ns[i], away: ns[j],
-          score1: played ? Math.floor(Math.random()*5) : null,
-          score2: played ? Math.floor(Math.random()*5) : null,
-          ref: ['Theo Dessens','Arnold Scholte','Leo Boer','Guus Heemskerk'][matches.length%4],
-        });
-        t += 7;
-      }
-    }
-    return {name:`Poule ${letter}`, category:cats[gi], veld:gi+1, teams, matches};
-  });
-
-  showApp();
-  renderStandings();
-  buildPouleSelector();
-  setStatus('Demo-modus actief', true);
-}
-
-// ── INIT ──
-if (config.clientId) {
-  document.getElementById('inp-client').value = config.clientId;
-  document.getElementById('inp-tenant').value = config.tenantId || '';
-  document.getElementById('inp-filename').value = config.filename || 'Master.xlsm';
-  // Auto-start: handles both fresh visit and returning from Microsoft redirect
-  fetchData();
-}
+// ── START ──
+loadFromGitHub();
 </script>
 </body>
 </html>
-
