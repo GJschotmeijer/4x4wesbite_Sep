@@ -211,40 +211,63 @@ function parseExcel(buf) {
 function parsePoule(wb, sheetName) {
   const ws = wb.Sheets[sheetName];
   const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: null });
-  if (!rows || rows.length < 10) return null;
+  
+  // Check of er wel data in het blad staat
+  if (!rows || rows.length < 5) return null;
 
-  const info = rows[7] || [];
-  const category    = info[4] || '';
-  const pouleLetter = info[8] || sheetName.replace('Poule','');
-  const veld        = info[10] || '';
+  // We halen de poule-letter direct uit de tabbladnaam (bijv. "PouleA" -> "A")
+  const pouleLetter = sheetName.replace('Poule', '').trim();
+  
+  // INFO RIJ (Pas dit aan als je info op een andere rij staat!)
+  // In jouw code was dit rij 8 (index 7). 
+  const info = rows[7] || []; 
+  const category = info[4] || 'Algemeen'; // Kolom E
+  const veld = info[10] || '?';           // Kolom K
 
-  // Matches: header at row index 9, data from 10 onward
+  // WEDSTRIJDEN LADEN
   const matches = [];
+  // We beginnen te zoeken vanaf rij 11 (index 10)
   for (let i = 10; i < rows.length; i++) {
     const r = rows[i];
-    if (!r || r[0] === null || r[0] === 'Team') break;
-    if (typeof r[0] !== 'number') continue;
-    const s1 = r[9], s2 = r[11];
-    const hasScore = s1 !== null && s1 !== '' && s2 !== null && s2 !== '';
-    matches.push({
-      nr: r[0],
-      start: fmtTime(r[1]),
-      home:  r[4]  || '',
-      away:  r[7]  || '',
-      score1: hasScore ? s1 : null,
-      score2: hasScore ? s2 : null,
-      ref:   (r[12] || '').toString().trim(),
-    });
+    // Stop als de rij leeg is of als er 'Team' staat (begin van de stand)
+    if (!r || r[0] === null || r[0] === undefined || r[0] === 'Team') continue;
+    
+    // Alleen rijen toevoegen die beginnen met een wedstrijdnummer (getal)
+    if (typeof r[0] === 'number') {
+      const s1 = r[9], s2 = r[11]; // Kolom J en L voor de scores
+      const hasScore = s1 !== null && s1 !== '' && s2 !== null && s2 !== '';
+      
+      matches.push({
+        nr: r[0],
+        start: fmtTime(r[1]), // Kolom B
+        home:  (r[4] || '').toString().trim(), // Kolom E
+        away:  (r[7] || '').toString().trim(), // Kolom H
+        score1: hasScore ? s1 : null,
+        score2: hasScore ? s2 : null,
+        ref:   (r[12] || '').toString().trim(), // Kolom M
+      });
+    }
   }
 
-  // Standings
+  // STANDEN LADEN (Zoekt naar de rij waar 'Team' in kolom A staat)
   let hi = -1;
-  for (let i = 0; i < rows.length; i++) { if (rows[i] && rows[i][0] === 'Team') { hi = i; break; } }
+  for (let i = 0; i < rows.length; i++) { 
+    if (rows[i] && rows[i][0] === 'Team') { hi = i; break; } 
+  }
+  
   const teams = [];
   if (hi >= 0) {
-    for (let i = hi+1; i < rows.length; i++) {
-      const r = rows[i]; if (!r || !r[0]) break;
-      teams.push({ name: r[0], pts: n(r[14]), g: n(r[16]), w: n(r[17]), v: n(r[18]), gd: n(r[19]) });
+    for (let i = hi + 1; i < rows.length; i++) {
+      const r = rows[i]; 
+      if (!r || !r[0] || r[0] === null) break;
+      teams.push({ 
+        name: r[0], 
+        pts: n(r[14]), // Kolom O
+        g: n(r[16]),   // Kolom Q
+        w: n(r[17]),   // Kolom R
+        v: n(r[18]),   // Kolom S
+        gd: n(r[19])   // Kolom T
+      });
     }
     teams.sort((a,b) => b.pts - a.pts);
   }
