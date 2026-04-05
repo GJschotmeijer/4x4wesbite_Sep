@@ -58,6 +58,7 @@
   }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
   #status-text { font-size: .82rem; color: var(--white); }
+  #status-text.no-update { color: var(--yellow) !important; font-style: italic; }
   #next-refresh { font-size: .72rem; color: rgba(255,255,255,.7); margin-top: 3px; }
   .header-actions { display: flex; gap: 8px; align-items: center; }
   #btn-refresh {
@@ -74,6 +75,17 @@
   }
   #btn-refresh:hover { background: var(--yellow); color: var(--black); }
   #btn-refresh:disabled { opacity: .4; cursor: not-allowed; }
+  .update-notice {
+    background: rgba(255,215,0,0.1);
+    color: #8B4513;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    margin: 10px 0;
+    text-align: center;
+    font-style: italic;
+    display: none;
+  }
 
   .tab-bar {
     background: var(--red);
@@ -350,6 +362,7 @@
       <span id="status-text">Laden...</span>
     </div>
     <div id="next-refresh"></div>
+    <div id="update-notice" class="update-notice"></div>
   </div>
   <div class="header-actions">
     <button id="btn-refresh" onclick="loadFromGitHub()">⟳ Vernieuwen</button>
@@ -394,6 +407,7 @@
 //  CONFIGURATIE — pas alleen deze regel aan
 // ════════════════════════════════════════════════
 const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/SEP-4x4-Schoolvoetbaltoernooi/4x4website_Sep/main/Master.XLSM';
+let lastModified = null;
 // ════════════════════════════════════════════════
 
 let allPoules = [], currentFilter = 'all', currentTab = 'standings', selectedPoule = 'all';
@@ -403,10 +417,23 @@ let refreshTimer = null, refreshCountdown = 30;
 async function loadFromGitHub() {
   setStatus('Laden...', false);
   document.getElementById('btn-refresh').disabled = true;
+  document.getElementById('update-notice').style.display = 'none';
   try {
     const url = GITHUB_RAW_URL + '?t=' + Date.now(); // cache bust
     const resp = await fetch(url);
     if (!resp.ok) throw new Error(`HTTP ${resp.status} — controleer of het bestand op GitHub staat.`);
+
+    const currentModified = resp.headers.get('Last-Modified');
+    if (lastModified && currentModified === lastModified) {
+      setStatus('Geen nieuwe wijzigingen sinds laatste update', false);
+      document.getElementById('status-text').classList.add('no-update');
+      document.getElementById('update-notice').textContent = 'Geen nieuwe wijzigingen in het Excel-bestand sinds de laatste update.';
+      document.getElementById('update-notice').style.display = 'block';
+      document.getElementById('btn-refresh').disabled = false;
+      return;
+    }
+    lastModified = currentModified;
+
     const buf = await resp.arrayBuffer();
     parseExcel(buf);
     setStatus(`Bijgewerkt: ${new Date().toLocaleTimeString('nl-NL')}`, true);
@@ -507,6 +534,7 @@ function n(v) { return typeof v === 'number' ? v : parseInt(v)||0; }
 function setStatus(t, live) {
   document.getElementById('status-text').textContent = t;
   document.getElementById('status-dot').style.background = live ? '#2ea84f' : '#f0b429';
+  document.getElementById('status-text').classList.remove('no-update');
 }
 
 function showApp() {
