@@ -3,69 +3,409 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>vv SEP Voetbaltoernooi – Live</title>
+<title>SEP Voetbaltoernooi – Live</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* vv SEP Kleuren: Rood & Wit */
-    --sep-red: #cc0000; 
-    --sep-red-dark: #8b0000; 
-    --sep-red-light: #ff3333;
-    --gold: #f0b429; 
-    --white: #ffffff; 
-    --bg-dark: #1a1a1a; 
-    --text-muted: #a0a0a0;
-    --card-bg: rgba(255,255,255,.05); 
-    --card-border: rgba(255,255,255,.1);
+    --green: #1a7a3c; --green-dark: #0f5429; --green-light: #2ea84f;
+    --gold: #f0b429; --white: #f8f9f6; --text: #1a2215; --muted: #6b7c63;
+    --card-bg: rgba(255,255,255,.04); --card-border: rgba(255,255,255,.09);
   }
-  
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg-dark); color: var(--white); min-height: 100vh; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--text); color: var(--white); min-height: 100vh; }
 
   header {
-    background: linear-gradient(135deg, var(--sep-red-dark) 0%, var(--sep-red) 60%, var(--sep-red-light) 100%);
+    background: linear-gradient(135deg, #8B0000 0%, #FF0000 60%, #FF4D4D 100%);
     padding: 22px 32px 16px; 
     position: sticky; 
     top: 0; 
     z-index: 100;
-    box-shadow: 0 4px 24px rgba(0,0,0,.5);
+    box-shadow: 0 4px 24px rgba(0,0,0,.45);
     display: flex; 
     align-items: center; 
     gap: 18px; 
     flex-wrap: wrap;
-    border-bottom: 3px solid var(--white);
-  }
-  
-  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; color: var(--white); letter-spacing: 2px; line-height: 1; text-shadow: 2px 2px 0 rgba(0,0,0,.3); }
-  .logo span { color: var(--gold); }
-  
+}
+  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 2.4rem; color: var(--gold); letter-spacing: 2px; line-height: 1; text-shadow: 2px 2px 0 rgba(0,0,0,.3); }
+  .logo span { color: var(--white); }
   .header-meta { flex: 1; }
-  .header-meta h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 3px; color: rgba(255,255,255,.8); text-transform: uppercase; }
-  
+  .header-meta h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 3px; color: rgba(255,255,255,.65); text-transform: uppercase; }
   #status-bar { display: flex; align-items: center; gap: 8px; margin-top: 5px; }
   .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--gold); animation: pulse 1.8s infinite; }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
   #status-text { font-size: .82rem; color: rgba(255,255,255,.7); }
-  #next-refresh { font-size: .72rem; color: rgba(255,255,255,.4); margin-top: 3px; }
-
+  #next-refresh { font-size: .72rem; color: rgba(255,255,255,.35); margin-top: 3px; }
   .header-actions { display: flex; gap: 8px; align-items: center; }
-  #btn-refresh { background: var(--white); color: var(--sep-red-dark); padding: 9px 16px; font-size: .88rem; border: none; border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 700; transition: all .2s; }
-  #btn-refresh:hover { background: var(--gold); color: #000; }
+  #btn-refresh { background: rgba(255,255,255,.12); color: var(--white); padding: 9px 16px; font-size: .88rem; border: 1px solid rgba(255,255,255,.2); border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 700; transition: all .2s; }
+  #btn-refresh:hover { background: rgba(255,255,255,.2); }
+  #btn-refresh:disabled { opacity: .4; cursor: not-allowed; }
 
-  .tab-bar { background: rgba(255,255,255,.02); border-bottom: 1px solid var(--card-border); padding: 0 32px; display: flex; }
-  .tab { padding: 14px 28px 12px; font-family: 'Bebas Neue', sans-serif; font-size: 1.05rem; letter-spacing: 2px; color: rgba(255,255,255,.4); border-bottom: 3px solid transparent; cursor: pointer; transition: all .2s; }
-  .tab.active { color: var(--white); border-bottom-color: var(--white); }
+  .tab-bar { background: rgba(255,255,255,.04); border-bottom: 1px solid rgba(255,255,255,.08); padding: 0 32px; display: flex; }
+  .tab { padding: 14px 28px 12px; font-family: 'Bebas Neue', sans-serif; font-size: 1.05rem; letter-spacing: 2px; color: rgba(255,255,255,.4); border-bottom: 3px solid transparent; cursor: pointer; transition: all .2s; user-select: none; }
+  .tab:hover { color: rgba(255,255,255,.7); }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
 
-  .filter-bar { background: rgba(0,0,0,.2); border-bottom: 1px solid var(--card-border); padding: 12px 32px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-  .filter-label { font-size: .75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-  .filter-btn { background: rgba(255,255,255,.07); color: rgba(255,255,255,.6); border: 1px solid var(--card-border); padding: 5px 15px; font-size: .8rem; border-radius: 20px; cursor: pointer; font-weight: 700; transition: all .2s; }
-  .filter-btn.active { background: var(--sep-red); color: var(--white); border-color: var(--sep-red-light); }
-  .filter-btn:hover { border-color: var(--white); color: var(--white); }
+  .filter-bar { background: rgba(255,255,255,.03); border-bottom: 1px solid rgba(255,255,255,.06); padding: 12px 32px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .filter-label { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-right: 4px; }
+  .filter-btn { background: rgba(255,255,255,.07); color: rgba(255,255,255,.65); border: 1px solid rgba(255,255,255,.12); padding: 5px 15px; font-size: .8rem; border-radius: 20px; letter-spacing: .5px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 700; transition: all .2s; }
+  .filter-btn.active { background: var(--green); color: var(--white); border-color: var(--green-light); }
+  .filter-btn:hover { border-color: var(--gold); color: var(--white); }
 
   main { padding: 24px 32px; max-width: 1400px; margin: 0 auto; }
 
-  /* Standings Cards */
+  /* Loading screen */
+  #loading-screen { text-align: center; padding: 100px 20px; }
+  #loading-screen .spin { font-size: 3rem; animation: spin 1s linear infinite; display: inline-block; margin-bottom: 20px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading-screen h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 3px; color: rgba(255,255,255,.5); }
+
+  /* Error screen */
+  #error-screen { display: none; text-align: center; padding: 80px 20px; }
+  #error-screen .icon { font-size: 3rem; margin-bottom: 16px; }
+  #error-screen h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; color: var(--gold); letter-spacing: 2px; margin-bottom: 12px; }
+  #error-screen p { color: rgba(255,255,255,.55); font-size: .9rem; line-height: 1.7; }
+
+  /* Standings */
   #poules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 18px; }
   .poule-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; overflow: hidden; animation: fadeIn .35s ease both; }
-  .poule-header { background: var(--sep-red-dark); padding: 11px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--sep-red); }
-  .
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+  .poule-header { background: var(--green-dark); padding: 11px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--green-light); }
+  .poule-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 2px; color: var(--gold); }
+  .poule-meta { font-size: .72rem; color: rgba(255,255,255,.5); text-align: right; line-height: 1.4; }
+  table { width: 100%; border-collapse: collapse; font-size: .81rem; }
+  thead tr { background: rgba(255,255,255,.05); }
+  thead th { padding: 7px 13px; text-align: left; font-size: .68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 700; }
+  thead th.num, td.num { text-align: center; }
+  tbody tr { border-bottom: 1px solid rgba(255,255,255,.055); transition: background .15s; }
+  tbody tr:hover { background: rgba(255,255,255,.05); }
+  tbody tr:last-child { border-bottom: none; }
+  td { padding: 9px 13px; vertical-align: middle; }
+  td.rank { font-family: 'Bebas Neue', sans-serif; font-size: 1.05rem; color: var(--muted); text-align: center; }
+  tr:first-child td.rank { color: var(--gold); }
+  tr:nth-child(2) td.rank { color: #b8c0b4; }
+  tr:nth-child(3) td.rank { color: #9a7040; }
+  .team-name { font-weight: 600; }
+  .pts { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--gold); text-align: center; }
+
+  /* Matches */
+  .poule-selector { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+  .ps-btn { background: rgba(255,255,255,.07); color: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.12); padding: 5px 13px; font-size: .78rem; border-radius: 6px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 700; transition: all .2s; }
+  .ps-btn.active { background: var(--green); color: var(--white); border-color: var(--green-light); }
+  .ps-btn:hover { border-color: var(--gold); color: var(--white); }
+  .matches-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 18px; }
+  .match-group { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; overflow: hidden; animation: fadeIn .3s ease both; }
+  .match-group-header { background: var(--green-dark); padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--green-light); }
+  .match-group-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 2px; color: var(--gold); }
+  .match-group-meta { font-size: .72rem; color: rgba(255,255,255,.5); text-align: right; line-height: 1.4; }
+  .match-row { display: grid; grid-template-columns: 52px 1fr 80px 1fr 90px; align-items: center; padding: 9px 14px; border-bottom: 1px solid rgba(255,255,255,.055); gap: 8px; transition: background .15s; }
+  .match-row:last-child { border-bottom: none; }
+  .match-row:hover { background: rgba(255,255,255,.04); }
+  .match-time { font-family: 'Bebas Neue', sans-serif; font-size: .95rem; color: var(--muted); letter-spacing: 1px; }
+  .match-team { font-size: .82rem; font-weight: 600; }
+  .match-team.home { text-align: right; }
+  .match-score { text-align: center; font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 2px; color: var(--white); background: rgba(255,255,255,.08); border-radius: 6px; padding: 3px 6px; min-width: 60px; }
+  .match-score.played { color: var(--gold); background: rgba(240,180,41,.1); }
+  .match-ref { font-size: .7rem; color: var(--muted); text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .empty-state { text-align: center; padding: 70px 20px; color: var(--muted); grid-column: 1/-1; }
+  .empty-state .icon { font-size: 2.8rem; margin-bottom: 14px; }
+  .empty-state h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: rgba(255,255,255,.35); letter-spacing: 2px; }
+
+  @media (max-width: 640px) {
+    header { padding: 14px 16px; } main { padding: 16px; }
+    .tab-bar { padding: 0 16px; } .filter-bar { padding: 10px 16px; }
+    .logo { font-size: 2rem; } .tab { padding: 12px 16px 10px; font-size: .9rem; }
+    .matches-grid { grid-template-columns: 1fr; }
+    .match-row { grid-template-columns: 44px 1fr 68px 1fr; }
+    .match-ref { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div><div class="logo">SEP <span>4x4 Toernooi 2026</span></div></div>
+  <div class="header-meta">
+    <h2>Live Standen &amp; Wedstrijden · 8 April 2026</h2>
+    <div id="status-bar">
+      <div class="dot" id="status-dot"></div>
+      <span id="status-text">Laden...</span>
+    </div>
+    <div id="next-refresh"></div>
+  </div>
+  <div class="header-actions">
+    <button id="btn-refresh" onclick="loadFromGitHub()">⟳ Vernieuwen</button>
+  </div>
+</header>
+
+<div class="tab-bar" id="tab-bar" style="display:none">
+  <div class="tab active" onclick="switchTab('standings',this)">📊 Standen</div>
+  <div class="tab" onclick="switchTab('matches',this)">⚽ Wedstrijden</div>
+</div>
+
+<div class="filter-bar" id="filter-bar" style="display:none">
+  <span class="filter-label">Filter:</span>
+  <button class="filter-btn active" onclick="setFilter('all',this)">Alle poules</button>
+  <button class="filter-btn" onclick="setFilter('Meisjes',this)">Meisjes</button>
+  <button class="filter-btn" onclick="setFilter('Gemengd',this)">Gemengd</button>
+  <button class="filter-btn" onclick="setFilter('Jongens',this)">Jongens</button>
+</div>
+
+<main>
+  <div id="loading-screen">
+    <div class="spin">⚽</div>
+    <h3>Standen laden...</h3>
+  </div>
+  <div id="error-screen">
+    <div class="icon">⚠️</div>
+    <h3>Kan data niet laden</h3>
+    <p id="error-msg"></p>
+  </div>
+  <div id="standings-view" style="display:none">
+    <div id="poules-grid"></div>
+  </div>
+  <div id="matches-view" style="display:none">
+    <div class="poule-selector" id="poule-selector"></div>
+    <div class="matches-grid" id="matches-grid"></div>
+  </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+// ════════════════════════════════════════════════
+//  CONFIGURATIE — pas alleen deze regel aan
+// ════════════════════════════════════════════════
+const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/SEP-4x4-Schoolvoetbaltoernooi/4x4website_Sep/main/Master.XLSM';
+// ════════════════════════════════════════════════
+
+let allPoules = [], currentFilter = 'all', currentTab = 'standings', selectedPoule = 'all';
+let refreshTimer = null, refreshCountdown = 30;
+
+// ── LOAD FROM GITHUB ──
+async function loadFromGitHub() {
+  setStatus('Laden...', false);
+  document.getElementById('btn-refresh').disabled = true;
+  try {
+    const url = GITHUB_RAW_URL + '?t=' + Date.now(); // cache bust
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status} — controleer of het bestand op GitHub staat.`);
+    const buf = await resp.arrayBuffer();
+    parseExcel(buf);
+    setStatus(`Bijgewerkt: ${new Date().toLocaleTimeString('nl-NL')}`, true);
+    showApp();
+    if (currentTab === 'standings') renderStandings();
+    else renderMatches();
+    buildPouleSelector();
+    startAutoRefresh();
+  } catch (err) {
+    console.error(err);
+    document.getElementById('loading-screen').style.display = 'none';
+    document.getElementById('error-screen').style.display = '';
+    document.getElementById('error-msg').textContent = err.message;
+    setStatus('Fout bij laden', false);
+  }
+  document.getElementById('btn-refresh').disabled = false;
+}
+
+// ── PARSE EXCEL ──
+function parseExcel(buf) {
+  const wb = XLSX.read(buf, { type: 'array', cellDates: true });
+  const pouleSheets = wb.SheetNames.filter(n => n.startsWith('Poule'));
+  allPoules = pouleSheets.map(name => parsePoule(wb, name)).filter(Boolean);
+}
+
+function parsePoule(wb, sheetName) {
+  const ws = wb.Sheets[sheetName];
+  const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: null });
+  if (!rows || rows.length < 10) return null;
+
+  const info = rows[7] || [];
+  const category    = info[4] || '';
+  const pouleLetter = info[8] || sheetName.replace('Poule','');
+  const veld        = info[10] || '';
+
+  // --- WEDSTRIJDEN LEZEN ---
+  const matches = [];
+  // We kijken vanaf rij 10 tot maximaal rij 30 (genoeg voor elke poule)
+  for (let i = 10; i < Math.min(rows.length, 35); i++) {
+    const r = rows[i];
+    
+    // Stop pas als we de tekst "Team" tegenkomen (begin van de stand) 
+    // of als de regel echt helemaal leeg is én de volgende ook.
+    if (!r || (r[0] === 'Team')) break; 
+    
+    // Als de regel leeg is of geen nummer heeft (bijv. wedstrijd 4 ontbreekt), overslaan maar NIET stoppen
+    if (r[0] === null || r[0] === "" || typeof r[0] !== 'number') continue;
+
+    const s1 = r[9], s2 = r[11];
+    const hasScore = s1 !== null && s1 !== '' && s2 !== null && s2 !== '';
+    
+    matches.push({
+      nr: r[0],
+      start: fmtTime(r[1]),
+      home:  (r[4] || 'TBD').toString().trim(),
+      away:  (r[7] || 'TBD').toString().trim(),
+      score1: hasScore ? s1 : null,
+      score2: hasScore ? s2 : null,
+      ref:   (r[12] || '').toString().trim(),
+    });
+  }
+
+  // --- STAND LEZEN ---
+  let hi = -1;
+  // Zoek de start van de stand (de regel die begint met "Team")
+  for (let i = 0; i < rows.length; i++) { 
+    if (rows[i] && rows[i][0] === 'Team') { hi = i; break; } 
+  }
+  
+  const teams = [];
+  if (hi >= 0) {
+    for (let i = hi + 1; i < hi + 10; i++) { // Check max 10 teams per poule
+      const r = rows[i]; 
+      if (!r || !r[0] || r[0] === "") continue; // Sla lege regels in de stand over
+      if (r[0] === "Team") continue; // Beveiliging tegen dubbele headers
+      
+      teams.push({ 
+        name: r[0], 
+        pts: n(r[14]), 
+        g: n(r[16]), 
+        w: n(r[17]), 
+        v: n(r[18]), 
+        gd: n(r[19]) 
+      });
+    }
+    // Sorteren op punten, dan op doelsaldo (gd)
+    teams.sort((a, b) => b.pts - a.pts || b.gd - a.gd);
+  }
+
+  return { name: `Poule ${pouleLetter}`, category, veld, teams, matches };
+}
+
+function fmtTime(v) {
+  if (!v) return '';
+  if (v instanceof Date) return `${String(v.getHours()).padStart(2,'0')}:${String(v.getMinutes()).padStart(2,'0')}`;
+  if (typeof v === 'string' && v.includes(':')) return v.substring(0,5);
+  if (typeof v === 'number') {
+    const m = Math.round(v * 24 * 60);
+    return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+  }
+  return String(v);
+}
+function n(v) { return typeof v === 'number' ? v : parseInt(v)||0; }
+
+// ── UI ──
+function setStatus(t, live) {
+  document.getElementById('status-text').textContent = t;
+  document.getElementById('status-dot').style.background = live ? '#2ea84f' : '#f0b429';
+}
+
+function showApp() {
+  document.getElementById('loading-screen').style.display = 'none';
+  document.getElementById('error-screen').style.display = 'none';
+  document.getElementById('tab-bar').style.display = 'flex';
+  document.getElementById('filter-bar').style.display = 'flex';
+  document.getElementById('standings-view').style.display = currentTab === 'standings' ? '' : 'none';
+  document.getElementById('matches-view').style.display  = currentTab === 'matches'   ? '' : 'none';
+}
+
+function switchTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.getElementById('standings-view').style.display = tab === 'standings' ? 'block' : 'none';
+  document.getElementById('matches-view').style.display   = tab === 'matches'   ? 'block' : 'none';
+  if (tab === 'standings') renderStandings();
+  else renderMatches();
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (currentTab === 'standings') renderStandings();
+  else renderMatches();
+}
+
+// ── RENDER STANDINGS ──
+function renderStandings() {
+  const grid = document.getElementById('poules-grid');
+  const list = filteredPoules();
+  if (!list.length) { grid.innerHTML = `<div class="empty-state"><div class="icon">⚽</div><h3>Geen poules gevonden</h3></div>`; return; }
+  grid.innerHTML = list.map((p,i) => `
+    <div class="poule-card" style="animation-delay:${i*.03}s">
+      <div class="poule-header">
+        <div class="poule-title">${p.name}</div>
+        <div class="poule-meta">${p.category}<br>Veld ${p.veld}</div>
+      </div>
+      <table>
+        <thead><tr><th class="num">#</th><th>Team</th><th class="num">G</th><th class="num">W</th><th class="num">V</th><th class="num">Ge</th><th class="num">Pnt</th></tr></thead>
+        <tbody>${p.teams.map((t,j) => `
+          <tr><td class="rank">${j+1}</td><td class="team-name">${t.name}</td>
+          <td class="num">${t.g}</td><td class="num">${t.w}</td><td class="num">${t.v}</td><td class="num">${t.gd}</td>
+          <td class="pts">${t.pts}</td></tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`).join('');
+}
+
+// ── RENDER MATCHES ──
+function buildPouleSelector() {
+  const sel = document.getElementById('poule-selector');
+  sel.innerHTML = `<button class="ps-btn ${selectedPoule==='all'?'active':''}" onclick="selectPoule('all',this)">Alle poules</button>`
+    + allPoules.map(p => `<button class="ps-btn ${selectedPoule===p.name?'active':''}" onclick="selectPoule('${p.name}',this)">${p.name}</button>`).join('');
+}
+
+function selectPoule(name, btn) {
+  selectedPoule = name;
+  document.querySelectorAll('.ps-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMatches();
+}
+
+function renderMatches() {
+  buildPouleSelector();
+  const grid = document.getElementById('matches-grid');
+  let list = filteredPoules();
+  if (selectedPoule !== 'all') list = list.filter(p => p.name === selectedPoule);
+  if (!list.length) { grid.innerHTML = `<div class="empty-state"><div class="icon">📋</div><h3>Geen wedstrijden gevonden</h3></div>`; return; }
+  grid.innerHTML = list.map((p,i) => `
+    <div class="match-group" style="animation-delay:${i*.03}s">
+      <div class="match-group-header">
+        <div class="match-group-title">${p.name}</div>
+        <div class="match-group-meta">${p.category} · Veld ${p.veld}</div>
+      </div>
+      ${p.matches.map(m => {
+        const played = m.score1 !== null;
+        return `<div class="match-row">
+          <div class="match-time">${m.start}</div>
+          <div class="match-team home">${m.home}</div>
+          <div class="match-score ${played?'played':''}">${played ? m.score1+' – '+m.score2 : '– – –'}</div>
+          <div class="match-team">${m.away}</div>
+          <div class="match-ref">${m.ref}</div>
+        </div>`;
+      }).join('')}
+    </div>`).join('');
+}
+
+function filteredPoules() {
+  return currentFilter === 'all' ? allPoules : allPoules.filter(p => p.category === currentFilter);
+}
+
+// ── AUTO REFRESH ──
+function startAutoRefresh() {
+  clearInterval(refreshTimer); refreshCountdown = 60; updateCountdown();
+  refreshTimer = setInterval(() => {
+    refreshCountdown--;
+    updateCountdown();
+    if (refreshCountdown <= 0) { refreshCountdown = 60; loadFromGitHub(); }
+  }, 1000);
+}
+function updateCountdown() {
+  const el = document.getElementById('next-refresh');
+  if (el && allPoules.length) el.textContent = `Volgende update over ${refreshCountdown}s`;
+}
+
+// ── START ──
+loadFromGitHub();
+</script>
+</body>
+</html>
