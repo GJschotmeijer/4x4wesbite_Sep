@@ -372,6 +372,7 @@
 <div class="tab-bar" id="tab-bar" style="display:none">
   <div class="tab active" onclick="switchTab('standings',this)">📊 Standen</div>
   <div class="tab" onclick="switchTab('matches',this)">⚽ Wedstrijden</div>
+  <div class="tab" onclick="switchTab('info',this)">ℹ️ Info</div>
 </div>
 
 <div class="filter-bar" id="filter-bar" style="display:none">
@@ -399,6 +400,10 @@
     <div class="poule-selector" id="poule-selector"></div>
     <div class="matches-grid" id="matches-grid"></div>
   </div>
+  <div id="info-view" style="display:none">
+  <h2>Info over het toernooi</h2>
+  <p>Hier komt jouw tekst...</p>
+</div>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
