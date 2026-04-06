@@ -471,7 +471,7 @@ function parsePoule(wb, sheetName) {
 
   // --- WEDSTRIJDEN LEZEN ---
   const matches = [];
-  for (let i = 10; i < Math.min(rows.length, 35); i++) {
+  for (let i = 10; i < Math.min(rows.length, 40); i++) {
     const r = rows[i];
     if (!r || (r[0] === 'Team')) break;
     if (r[0] === null || r[0] === "" || typeof r[0] !== 'number') continue;
