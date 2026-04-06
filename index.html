@@ -557,8 +557,9 @@ function switchTab(tab, el) {
   if (el) el.classList.add('active');
   document.getElementById('standings-view').style.display = tab === 'standings' ? 'block' : 'none';
   document.getElementById('matches-view').style.display   = tab === 'matches'   ? 'block' : 'none';
+  document.getElementById('info-view').style.display      = tab === 'info'      ? 'block' : 'none';  // ← nieuw
   if (tab === 'standings') renderStandings();
-  else renderMatches();
+  else if (tab === 'matches') renderMatches();
 }
 
 function setFilter(f, btn) {
