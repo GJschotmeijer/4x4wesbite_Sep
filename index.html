@@ -349,6 +349,18 @@
     .match-row { grid-template-columns: 44px 1fr 68px 1fr; }
     .match-ref { display: none; }
   }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
+.info-card { background: var(--white); border: 1px solid var(--card-border); border-radius: 14px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+.info-card-header { background: var(--red); padding: 11px 16px; border-bottom: 2px solid var(--red-light); display: flex; align-items: center; gap: 10px; }
+.info-card-icon { font-size: 18px; }
+.info-card-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 2px; color: var(--yellow); }
+.info-card-body { padding: 16px; font-size: .88rem; line-height: 1.7; color: var(--text); }
+.info-card-body a { color: var(--red); font-weight: 700; text-decoration: none; }
+.info-card-body a:hover { text-decoration: underline; }
+.notice-card { background: #fff9e6; border: 1px solid #f0c000; border-left: 4px solid var(--yellow); border-radius: 10px; padding: 14px 16px; font-size: .87rem; color: #7a5a00; line-height: 1.7; grid-column: 1 / -1; }
+.notice-card strong { color: #5a3e00; }
+.sponsor-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.sponsor-pill { background: rgba(198,12,48,.08); color: var(--red); border: 1px solid rgba(198,12,48,.25); border-radius: 20px; padding: 4px 12px; font-size: .78rem; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -400,9 +412,49 @@
     <div class="poule-selector" id="poule-selector"></div>
     <div class="matches-grid" id="matches-grid"></div>
   </div>
-  <div id="info-view" style="display:none">
-  <h2>Info over het toernooi</h2>
-  <p>Hier komt jouw tekst...</p>
+ <div id="info-view" style="display:none">
+  <div class="info-grid">
+
+    <div class="notice-card">
+      <strong>⚠️ Let op:</strong> Deze website met standen is in ontwikkeling en <strong>niet leidend</strong>. Het wedstrijdcommissariaat beslist te allen tijde.
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-header"><span class="info-card-icon">🙌</span><div class="info-card-title">Over het toernooi</div></div>
+      <div class="info-card-body">Het SEP 4x4 toernooi wordt ieder jaar mogelijk gemaakt door de inzet van vele vrijwilligers. Zonder hen geen toernooi — een groot dankjewel aan iedereen die meehelpt!</div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-header"><span class="info-card-icon">🤝</span><div class="info-card-title">Sponsoren 2026</div></div>
+      <div class="info-card-body">
+        Deze editie is mede mogelijk gemaakt door:
+        <div class="sponsor-list">
+          <span class="sponsor-pill">Jumbo Dasstraat</span>
+          <span class="sponsor-pill">Polisdesk</span>
+          <span class="sponsor-pill">Buurtfonds</span>
+          <span class="sponsor-pill">Univé het Groene Hart</span>
+          <span class="sponsor-pill">SHDJ</span>
+          <span class="sponsor-pill">Gemeente Delft</span>
+          <span class="sponsor-pill">Fonds 1818</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-header"><span class="info-card-icon">🌐</span><div class="info-card-title">Meer informatie</div></div>
+      <div class="info-card-body">Meer informatie over vv SEP vind je op de website:<br><br>
+        <a href="https://vvsep.nl/algemeen" target="_blank">→ Bezoek de website van vv SEP</a>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-header"><span class="info-card-icon">⚽</span><div class="info-card-title">Gratis meedoen?</div></div>
+      <div class="info-card-body">Vind je voetballen leuk en wil je een paar keer <strong>gratis meedoen</strong> om te proberen? Neem dan contact op met vv SEP:<br><br>
+        <a href="https://vvsep.nl/algemeen" target="_blank">→ Contactformulier vv SEP</a>
+      </div>
+    </div>
+
+  </div>
 </div>
 </main>
 
